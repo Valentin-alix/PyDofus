@@ -1,8 +1,13 @@
-import sys, json
-from pydofus.dlm import DLM, InvalidDLMFile
+import json
+import sys
+
+from pydofus.dlm import DLM
 
 # python dlm_unpack.py file.dlm
 # file output: file.json
+
+# path_input = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
+# path_output = os.path.join(Path(__file__).parent, "output", "d2p\\")
 
 file = sys.argv[1]
 

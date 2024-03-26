@@ -11,8 +11,14 @@ from pydofus.swl import SWLReader
 # folder output: ./output/{all files}.d2p
 
 
-path_input = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
-path_output = os.path.join(Path(__file__).parent, "output", "d2p\\")
+PATH_WORLD = os.path.join(DOFUS_PATH, "content", "gfx", "world\\")
+PATH_WORLD_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p", "world\\")
+
+PATH_ITEMS = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
+PAPTH_ITEMS_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p\\")
+
+path_input = PATH_WORLD
+path_output = PATH_WORLD_OUTPUT
 
 for file in os.listdir(path_input):
     if file.endswith(".d2p"):
