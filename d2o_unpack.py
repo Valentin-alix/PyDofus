@@ -1,11 +1,15 @@
-import io, sys, os, json
+import json
+import os
+from pathlib import Path
+
+from const import DOFUS_PATH
 from pydofus.d2o import D2OReader, InvalidD2OFile
 
 # python d2o_unpack.py (all files in input folder)
 # folder output: ./output/{all files}
 
-path_input = "./input/"
-path_output = "./output/"
+path_input = os.path.join(DOFUS_PATH, "data", "common\\")
+path_output = os.path.join(Path(__file__).parent, "output", "d2o\\")
 
 for file in os.listdir(path_input):
     if file.endswith(".d2o"):
@@ -18,8 +22,7 @@ for file in os.listdir(path_input):
             d2o_reader = D2OReader(d2p_file)
             d2o_data = d2o_reader.get_objects()
 
-            json_output = open(path_output + file_name.replace("d2o", "json"),
-                               "w")
+            json_output = open(path_output + file_name.replace("d2o", "json"), "w")
             json.dump(d2o_data, json_output, indent=4)
             json_output.close()
         except InvalidD2OFile:

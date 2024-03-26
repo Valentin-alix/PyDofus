@@ -1,5 +1,5 @@
 import sys, json
-from pydofus.swl import SWLReader, InvalidSWLFile
+from pydofus.swl import SWLBuilder, SWLReader, InvalidSWLFile
 
 # python swl_pack.py file.swf (require file.json)
 # file output: file.swl

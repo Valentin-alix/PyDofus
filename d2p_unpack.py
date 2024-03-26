@@ -1,12 +1,18 @@
-import io, sys, os, json
+import io
+import json
+import os
+from pathlib import Path
+
+from const import DOFUS_PATH
 from pydofus.d2p import D2PReader, InvalidD2PFile
-from pydofus.swl import SWLReader, InvalidSWLFile
+from pydofus.swl import SWLReader
 
 # python d2p_pack.py (all files in input folder)
 # folder output: ./output/{all files}.d2p
 
-path_input = "./input/"
-path_output = "./output/"
+
+path_input = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
+path_output = os.path.join(Path(__file__).parent, "output", "d2p\\")
 
 for file in os.listdir(path_input):
     if file.endswith(".d2p"):
@@ -35,11 +41,19 @@ for file in os.listdir(path_input):
                     swl = io.BytesIO(specs["binary"])
                     swl_reader = SWLReader(swl)
 
-                    swf_output = open(path_output + file_name + "/" + name.replace("swl", "swf"), "wb")
-                    json_output = open(path_output + file_name + "/" + name.replace("swl", "json"), "w")
+                    swf_output = open(
+                        path_output + file_name + "/" + name.replace("swl", "swf"), "wb"
+                    )
+                    json_output = open(
+                        path_output + file_name + "/" + name.replace("swl", "json"), "w"
+                    )
 
                     swf_output.write(swl_reader.SWF)
-                    swl_data = {'version':swl_reader.version, 'frame_rate':swl_reader.frame_rate, 'classes':swl_reader.classes}
+                    swl_data = {
+                        "version": swl_reader.version,
+                        "frame_rate": swl_reader.frame_rate,
+                        "classes": swl_reader.classes,
+                    }
                     json.dump(swl_data, json_output, indent=4)
 
                     swf_output.close()
