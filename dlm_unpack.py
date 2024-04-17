@@ -1,23 +1,24 @@
 import json
-import sys
+import os
+from pathlib import Path
 
 from pydofus.dlm import DLM
 
 # python dlm_unpack.py file.dlm
 # file output: file.json
 
-# path_input = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
-# path_output = os.path.join(Path(__file__).parent, "output", "d2p\\")
+PATH_INPUT = os.path.join(Path(__file__).parent, "output", "d2p_maps\\")
+FOLDER_OUPUT = os.path.join(Path(__file__).parent, "output", "dlm\\")
 
-file = sys.argv[1]
+if __name__ == "__main__":
+    for root, dirs, files in os.walk(PATH_INPUT):
+        for file in files:
+            path_file = os.path.join(root, file)
+            path_output = os.path.join(FOLDER_OUPUT, file.replace("dlm", "json"))
 
-dlm_input = open(file, "rb")
-json_output = open(file.replace("dlm", "json"), "w")
+            with open(path_file, "rb") as dlm_input:
+                dlm = DLM(dlm_input, "649ae451ca33ec53bbcbcc33becf15f4")
+                data = dlm.read()
 
-dlm = DLM(dlm_input, "649ae451ca33ec53bbcbcc33becf15f4")
-data = dlm.read()
-
-json.dump(data, json_output, indent=2)
-
-dlm_input.close()
-json_output.close()
+            with open(path_output, "w") as dlm_output:
+                json.dump(data, dlm_output, indent=2)

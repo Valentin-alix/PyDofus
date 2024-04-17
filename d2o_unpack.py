@@ -11,6 +11,8 @@ from pydofus.d2o import D2OReader, InvalidD2OFile
 path_input = os.path.join(DOFUS_PATH, "data", "common\\")
 path_output = os.path.join(Path(__file__).parent, "output", "d2o\\")
 
+os.makedirs(path_output, exist_ok=True)
+
 for file in os.listdir(path_input):
     if file.endswith(".d2o"):
         file_name = os.path.basename(file)
