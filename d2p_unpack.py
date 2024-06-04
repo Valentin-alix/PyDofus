@@ -1,7 +1,9 @@
 import io
 import json
 import os
+import struct
 from pathlib import Path
+import sys
 
 from const import DOFUS_PATH
 from pydofus.d2p import D2PReader, InvalidD2PFile
@@ -20,62 +22,68 @@ PAPTH_ITEMS_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p\\")
 PATH_MAP = os.path.join(DOFUS_PATH, "content", "maps\\")
 PATH_MAP_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p_maps\\")
 
-path_input = PATH_WORLD
-path_output = PATH_WORLD_OUTPUT
+PATH_GFX = os.path.join(DOFUS_PATH, "content", "gfx\\")
+PATH_GFX_OUTPUT = os.path.join(Path(__file__).parent, "output", "gfx\\")
+
+path_input = PATH_GFX
+path_output = PATH_GFX_OUTPUT
 
 if __name__ == "__main__":
-    for file in os.listdir(path_input):
-        if file.endswith(".d2p"):
-            file_name = os.path.basename(file)
-            d2p_file = open(path_input + file, "rb")
+    for root, subdirs, files in os.walk(path_input):
+        for file in files:
+            folder = os.path.relpath(root,path_input)
+            if file.endswith(".d2p"):
+                file_name = os.path.basename(file)
+                d2p_file = open(os.path.join(root, file), "rb")
 
-            try:
-                os.stat(path_output + file_name)
-            except:
-                os.mkdir(path_output + file_name)
+                output_folder = os.path.join(path_output,folder,file_name)
+                os.makedirs(output_folder, exist_ok=True)
 
-            print("D2P Unpacker for " + file_name)
+                # print("D2P Unpacker for " + file_name)
 
-            try:
-                d2p_reader = D2PReader(d2p_file, False)
-                d2p_reader.load()
-                for name, specs in d2p_reader.files.items():
-                    print("extract file " + file_name + "/" + name)
+                try:
+                    d2p_reader = D2PReader(d2p_file, False)
+                    d2p_reader.load()
+                    for name, specs in d2p_reader.files.items():
+                        # print("extract file " + file_name + "/" + name)
 
-                    try:
-                        os.stat(path_output + file_name + "/" + os.path.dirname(name))
-                    except:
-                        os.makedirs(
-                            path_output + file_name + "/" + os.path.dirname(name)
+                        file_path_output = os.path.join(
+                            output_folder,
+                            os.path.dirname(name),
                         )
 
-                    if "swl" in name:
-                        swl = io.BytesIO(specs["binary"])
-                        swl_reader = SWLReader(swl)
-
-                        swf_output = open(
-                            path_output + file_name + "/" + name.replace("swl", "swf"),
-                            "wb",
-                        )
-                        json_output = open(
-                            path_output + file_name + "/" + name.replace("swl", "json"),
-                            "w",
+                        file_output =  os.path.join(
+                            output_folder,
+                            name
                         )
 
-                        swf_output.write(swl_reader.SWF)
-                        swl_data = {
-                            "version": swl_reader.version,
-                            "frame_rate": swl_reader.frame_rate,
-                            "classes": swl_reader.classes,
-                        }
-                        json.dump(swl_data, json_output, indent=4)
+                        os.makedirs(file_path_output, exist_ok=True)
 
-                        swf_output.close()
-                        json_output.close()
-                    else:
-                        file_output = open(path_output + file_name + "/" + name, "wb")
-                        file_output.write(specs["binary"])
-                        file_output.close()
+                        if "swl" in name:
+                            swl = io.BytesIO(specs["binary"])
+                            swl_reader = SWLReader(swl)
+
+                            swf_output = open(
+                                file_output.replace("swl", "swf"), "wb"
+                            )
+                            json_output = open(
+                                file_output.replace("swl", "json"), "w"
+                            )
+
+                            swf_output.write(swl_reader.SWF)
+                            swl_data = {
+                                "version": swl_reader.version,
+                                "frame_rate": swl_reader.frame_rate,
+                                "classes": swl_reader.classes,
+                            }
+                            json.dump(swl_data, json_output, indent=4)
+
+                            swf_output.close()
+                            json_output.close()
+                        else:
+                            _file_output = open(file_output, "wb")
+                            _file_output.write(specs["binary"])
+                            _file_output.close()
+                        pass
+                except (InvalidD2PFile, struct.error):
                     pass
-            except InvalidD2PFile:
-                pass

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "libamf": "^1.4.2"
+  }
+}
