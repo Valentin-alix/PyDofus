@@ -8,16 +8,22 @@ from pydofus.ele import ELE
 # python ele_unpack.py file.ele
 # file output: file.json
 
-PATH_MAP = os.path.join(DOFUS_PATH, "content", "maps", "elements.ele")
-PATH_MAP_OUTPUT = os.path.join(Path(__file__).parent, "output", "elements.json")
 
-ele_input = open(PATH_MAP, "rb")
-json_output = open(PATH_MAP_OUTPUT, "w")
+def main():
+    PATH_MAP = os.path.join(DOFUS_PATH, "content", "maps", "elements.ele")
+    PATH_MAP_OUTPUT = os.path.join(Path(__file__).parent, "output", "elements.json")
 
-ele = ELE(ele_input)
-data = ele.read()
+    ele_input = open(PATH_MAP, "rb")
+    json_output = open(PATH_MAP_OUTPUT, "w")
 
-json.dump(data, json_output, indent=2)
+    ele = ELE(ele_input)
+    data = ele.read()
 
-ele_input.close()
-json_output.close()
+    json.dump(data, json_output, indent=2)
+
+    ele_input.close()
+    json_output.close()
+
+
+if __name__ == "__main__":
+    main()

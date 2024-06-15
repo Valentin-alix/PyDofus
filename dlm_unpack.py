@@ -10,7 +10,8 @@ from pydofus.dlm import DLM
 PATH_INPUT = os.path.join(Path(__file__).parent, "output", "d2p_maps\\")
 FOLDER_OUPUT = os.path.join(Path(__file__).parent, "output", "dlm\\")
 
-if __name__ == "__main__":
+
+def main():
     for root, dirs, files in os.walk(PATH_INPUT):
         for file in files:
             path_file = os.path.join(root, file)
@@ -22,3 +23,7 @@ if __name__ == "__main__":
 
             with open(path_output, "w") as dlm_output:
                 json.dump(data, dlm_output, indent=2)
+
+
+if __name__ == "__main__":
+    main()

@@ -8,7 +8,8 @@ from pydofus.d2o import D2OReader, InvalidD2OFile
 # python d2o_unpack.py (all files in input folder)
 # folder output: ./output/{all files}
 
-if __name__ == "__main__":
+
+def main():
     path_input = os.path.join(DOFUS_PATH, "data", "common\\")
     path_output = os.path.join(Path(__file__).parent, "output", "d2o\\")
 
@@ -30,3 +31,7 @@ if __name__ == "__main__":
                 json_output.close()
             except InvalidD2OFile:
                 pass
+
+
+if __name__ == "__main__":
+    main()
