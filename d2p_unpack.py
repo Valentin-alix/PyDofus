@@ -12,20 +12,14 @@ from pydofus.swl import SWLReader
 # folder output: ./output/{all files}.d2p
 
 
-PATH_WORLD = os.path.join(DOFUS_PATH, "content", "gfx", "world\\")
-PATH_WORLD_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p_worlds\\")
-
-PATH_ITEMS = os.path.join(DOFUS_PATH, "content", "gfx", "items\\")
-PAPTH_ITEMS_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p\\")
-
 PATH_MAP = os.path.join(DOFUS_PATH, "content", "maps\\")
 PATH_MAP_OUTPUT = os.path.join(Path(__file__).parent, "output", "d2p_maps\\")
 
 PATH_GFX = os.path.join(DOFUS_PATH, "content", "gfx\\")
 PATH_GFX_OUTPUT = os.path.join(Path(__file__).parent, "output", "gfx\\")
 
-path_input = PATH_GFX
-path_output = PATH_GFX_OUTPUT
+path_input = PATH_MAP
+path_output = PATH_MAP_OUTPUT
 
 
 def main():
